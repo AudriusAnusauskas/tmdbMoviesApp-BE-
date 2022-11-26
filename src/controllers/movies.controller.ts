@@ -11,6 +11,7 @@ const getMovieDetails = (req: express.Request, res: express.Response): void => {
   const mov = detailedMovie.find((movie) => movie.movieId === id);
   if (!mov) {
     res.status(404).send('Movie not found');
+    return console.error('Movie not found');
   }
   res.json(mov);
 };
