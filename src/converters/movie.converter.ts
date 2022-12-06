@@ -5,8 +5,8 @@ const convertMovie = (obj: TmdbMovie): Movie => {
     movieId: obj.id,
     title: obj.title,
     releaseDate: obj.release_date,
-    backdropPath: `${prefix}${obj.backdrop_path}`,
-    posterPath: `${prefix}${obj.poster_path}`,
+    backdropPath: `${prefix}/${obj.backdrop_path}`,
+    posterPath: `${prefix}/${obj.poster_path}`,
     voteAverage: obj.vote_average,
   };
   return output;
