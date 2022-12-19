@@ -1,9 +1,13 @@
 import express from 'express';
-import movies from '../../tempData/movies';
+import { getTmdbMovies } from '../services/movies.service';
 import detailedMovie from '../../tempData/movie';
 
-const getMovies = (_req: express.Request, res: express.Response): void => {
-  res.json(movies);
+const getMovies = async (_req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
+  try {
+    res.json(await getTmdbMovies());
+  } catch (err) {
+    next(err);
+  }
 };
 
 const getMovieDetails = (req: express.Request, res: express.Response): void => {
