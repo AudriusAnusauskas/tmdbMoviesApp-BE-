@@ -21,14 +21,22 @@ const getTmdbMovies = async (): Promise<Movies> => {
   };
 };
 
+interface CacheMoveiDetails {
+  [key: number]: MovieDetails;
+}
+
+const cacheMovieDetails: CacheMoveiDetails = {};
+
 const getTmdbMovieDetails = async (movieId: number): Promise<MovieDetails> => {
-  const { data } = await axios.get<TmdbMovieDetails>(
-    `https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.API_KEY}`,
-  );
+  if (!cacheMovieDetails[movieId]) {
+    const { data } = await axios.get<TmdbMovieDetails>(
+      `https://api.themoviedb.org/3/movie/${movieId}?api_key=${process.env.API_KEY}`,
+    );
+    cacheMovieDetails[movieId] = convertMovieDetails(data);
 
-  const detailedMovie = convertMovieDetails(data);
-
-  return detailedMovie;
+    return cacheMovieDetails[movieId];
+  }
+  return cacheMovieDetails[movieId];
 };
 
 export { getTmdbMovies, getTmdbMovieDetails };
