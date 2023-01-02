@@ -22,7 +22,7 @@ const getTmdbMovies = async (): Promise<Movies> => {
 };
 
 interface CacheMoveiDetails {
-  [key: number]: MovieDetails;
+  [id: number]: MovieDetails;
 }
 
 const cacheMovieDetails: CacheMoveiDetails = {};
