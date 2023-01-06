@@ -1,9 +1,10 @@
 import express from 'express';
 import { getTmdbMovies, getTmdbMovieDetails } from '../services/movies.service';
 
-const getMovies = async (_req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
+const getMovies = async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
   try {
-    res.json(await getTmdbMovies());
+    const page = req.query.page ? parseInt(req.query.page as string) : 1;
+    res.json(await getTmdbMovies(page));
   } catch (err) {
     next(err);
   }
