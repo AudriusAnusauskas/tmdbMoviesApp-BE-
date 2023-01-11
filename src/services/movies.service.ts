@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { convertMovie, convertMovieDetails } from '../converters/movie.converter';
+import validate from '../validators/title.validator';
 
 const moviesCache: { [page: number]: Movie[] } = {};
 let totalPagesCache: number | undefined;
@@ -41,4 +42,22 @@ const getTmdbMovieDetails = async (movieId: number): Promise<MovieDetails> => {
   return cacheMovieDetails[movieId];
 };
 
-export { getTmdbMovies, getTmdbMovieDetails };
+const searchMoviesByTitle = async (
+  title: string,
+  page: number,
+): Promise<TmdbMovies | { error: string; page?: number; results?: string[]; totalPages?: number }> => {
+  if (!validate(title)) {
+    return { error: 'Invalid title. Use only letters, numbers, dashes and dots' };
+  }
+  try {
+    const response = await axios.get<TmdbMovies>(
+      `https://api.themoviedb.org/3/search/movie?query=${title}&page=${page}&api_key=${process.env.API_KEY}`,
+    );
+    const data = response.data;
+    return data;
+  } catch (error) {
+    return { error: 'Movie search failed' };
+  }
+};
+
+export { getTmdbMovies, getTmdbMovieDetails, searchMoviesByTitle };

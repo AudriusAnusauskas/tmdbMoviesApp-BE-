@@ -1,5 +1,5 @@
 import express from 'express';
-import { getTmdbMovies, getTmdbMovieDetails } from '../services/movies.service';
+import { getTmdbMovies, getTmdbMovieDetails, searchMoviesByTitle } from '../services/movies.service';
 
 const getMovies = async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
   try {
@@ -22,4 +22,14 @@ const getMovieDetails = async (
   }
 };
 
-export { getMovies, getMovieDetails };
+const searchMovies = async (req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> => {
+  try {
+    const title = req.query.title as string;
+    const page = req.query.page ? parseInt(req.query.page as string) : 1;
+    res.json(await searchMoviesByTitle(title, page));
+  } catch (err) {
+    next(err);
+  }
+};
+
+export { getMovies, getMovieDetails, searchMovies };
