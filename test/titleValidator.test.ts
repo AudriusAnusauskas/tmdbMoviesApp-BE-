@@ -15,3 +15,9 @@ test('validates titele if it contais letters, numbers, dots and dashes', () => {
 test('validates titele if it contais letters, numbers, dots and dashes', () => {
   expect(validate('Harry.Poter')).toBe(true);
 });
+test('validates titele if it contais letters, numbers, dots and dashes', () => {
+  expect(validate('@Harry.Poter')).toBe(false);
+});
+test('validates titele if it contais letters, numbers, dots and dashes', () => {
+  expect(validate('Harry&Poter')).toBe(false);
+});

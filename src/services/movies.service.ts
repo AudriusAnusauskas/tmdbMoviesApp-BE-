@@ -44,13 +44,18 @@ const getTmdbMovieDetails = async (movieId: number): Promise<MovieDetails> => {
 const searchMoviesByTitle = async (
   title: string,
   page: number,
-): Promise<TmdbMovies | { error: string; page?: number; results?: string[]; totalPages?: number }> => {
+): Promise<Movies | { error: string; page?: number; results?: string[]; totalPages?: number }> => {
   try {
-    const response = await axios.get<TmdbMovies>(
+    const { data } = await axios.get<TmdbMovies>(
       `https://api.themoviedb.org/3/search/movie?query=${title}&page=${page}&api_key=${process.env.API_KEY}`,
     );
-    const data = response.data;
-    return data;
+    const filteredMovies = data.results.map(convertMovie);
+    const totalPages = data.total_pages;
+    return {
+      page,
+      movies: filteredMovies || [],
+      totalPages: totalPages || 1,
+    };
   } catch (error) {
     throw new Error('Movie search failed');
   }
