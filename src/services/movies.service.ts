@@ -18,8 +18,8 @@ const getTmdbMovies = async (page: number): Promise<Movies> => {
 
   return {
     page,
-    movies: moviesCache[cacheKey] || [],
-    totalPages: totalPagesCache || 1,
+    movies: moviesCache[cacheKey] ?? [],
+    totalPages: totalPagesCache ?? 1,
   };
 };
 

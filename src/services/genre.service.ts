@@ -10,7 +10,7 @@ const getGenres = async (): Promise<Genres> => {
     genreCache = data.genres;
   }
 
-  return { genres: genreCache || [] };
+  return { genres: genreCache ?? [] };
 };
 
 export { getGenres };
