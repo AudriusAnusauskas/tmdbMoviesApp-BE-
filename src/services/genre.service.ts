@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-let genreCache: Genre[] = [];
+let genreCache: Genre[];
 
 const getGenres = async (): Promise<Genres> => {
   if (!genreCache) {
