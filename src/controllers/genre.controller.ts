@@ -1,5 +1,5 @@
 import express from 'express';
-import { getGenres } from 'src/services/genre.service';
+import { getGenres } from '../services/genre.service';
 
 const requestGenres = async (
   _req: express.Request,
