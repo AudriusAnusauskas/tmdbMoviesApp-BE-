@@ -19,11 +19,11 @@ const performGetMoviesRequest = async (page: number, genres: [] = []): Promise<M
 const moviesCache: { [page: number]: Movie[] } = {};
 let totalPagesCache: number | undefined;
 
-const getMovies = async (page: number, genre: []): Promise<Movies> => {
+const getMovies = async (page: number, genres: []): Promise<Movies> => {
   const cacheKey = Number(page);
 
-  if (!moviesCache[cacheKey]) {
-    const data = await performGetMoviesRequest(page, genre);
+  if (!moviesCache[cacheKey] || genres) {
+    const data = await performGetMoviesRequest(page, genres);
 
     moviesCache[cacheKey] = data.movies;
     totalPagesCache = data.totalPages;
