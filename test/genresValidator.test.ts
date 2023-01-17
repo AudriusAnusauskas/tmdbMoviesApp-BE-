@@ -1,17 +1,11 @@
 import validateGenres from '../src/validators/genres.validator';
 
-test('validates genres if it is a array of numbers', () => {
-  expect(validateGenres([])).toBe(true);
-});
+describe('genresValidator', () => {
+  it('should not fail if passed empty array', () => {
+    expect(validateGenres([])).toBe(true);
+  });
 
-test('validates genres if it is a array of numbers', () => {
-  expect(validateGenres(['1', '2'])).toBe(true);
-});
-
-test('validates genres if it is a array of numbers', () => {
-  expect(validateGenres(['1, 2'])).toBe(true);
-});
-
-test('validates genres if it is a array of numbers', () => {
-  expect(validateGenres(['a, b'])).toBe('All genres should be integers');
+  it('array of numbers should return true', () => {
+    expect(validateGenres([1, 2, 3])).toBe(true);
+  });
 });

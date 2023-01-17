@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { convertMovie, convertMovieDetails } from '../converters/movie.converter';
 
-const performGetMoviesRequest = async (page: number, genres: [] = []): Promise<Movies> => {
+const performGetMoviesRequest = async (page: number, genres: number[]): Promise<Movies> => {
   const { data } = await axios.get<TmdbMovies>(
     `https://api.themoviedb.org/3/discover/movie?with_genres=${genres}&page=${page}&vote_count.gte=1000&api_key=${process.env.API_KEY}`,
   );
@@ -19,12 +19,21 @@ const performGetMoviesRequest = async (page: number, genres: [] = []): Promise<M
 const moviesCache: { [page: number]: Movie[] } = {};
 let totalPagesCache: number | undefined;
 
-const getMovies = async (page: number, genres: []): Promise<Movies> => {
+const getMovies = async (page: number, genres: number[]): Promise<Movies> => {
   const cacheKey = Number(page);
-
-  if (!moviesCache[cacheKey] || genres) {
+  if (genres) {
     const data = await performGetMoviesRequest(page, genres);
+    const filteredMoviesByGenre = data.movies;
+    const totalPages = data.totalPages;
+    return {
+      page,
+      movies: filteredMoviesByGenre ?? [],
+      totalPages: totalPages ?? 1,
+    };
+  }
 
+  if (!moviesCache[cacheKey]) {
+    const data = await performGetMoviesRequest(page, []);
     moviesCache[cacheKey] = data.movies;
     totalPagesCache = data.totalPages;
   }
@@ -73,24 +82,5 @@ const searchMoviesByTitle = async (
     throw new Error('Movie search failed');
   }
 };
-
-// const searchMoviesByGenre = async (genres: number[], page: number): Promise<Movies> => {
-//   try {
-//     const { data } = await axios.get<TmdbMovies>(
-//       `https://api.themoviedb.org/3/discover/movie?with_genres=${genres.join(
-//         ',',
-//       )}&page=${page}&vote_count.gte=1000&api_key=${process.env.API_KEY}`,
-//     );
-//     const filteredMoviesByGenre = data.results.map(convertMovie);
-//     const totalPages = data.total_pages;
-//     return {
-//       page,
-//       movies: filteredMoviesByGenre ?? [],
-//       totalPages: totalPages ?? 1,
-//     };
-//   } catch (error) {
-//     throw new Error('Movie genre search failed');
-//   }
-// };
 
 export { getMovies, getTmdbMovieDetails, searchMoviesByTitle };

@@ -7,8 +7,7 @@ const getMovies = async (req: express.Request, res: express.Response, next: expr
   try {
     const page = req.query.page ? parseInt(req.query.page as string) : 1;
     const title = req.query.title as string;
-    const genres = req.query.genres as [];
-    genres.toString().split(',');
+    const genres = (req.query.genres as string)?.split(',').map((e) => parseInt(e)) ?? [];
 
     if (!validateTitle(title)) {
       return res.status(400).json({ error: 'invalid title' }).end();
