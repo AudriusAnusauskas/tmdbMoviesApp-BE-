@@ -7,7 +7,7 @@ const validateGenre = (genres: number[]) => {
   }
   for (const genre of genres) {
     if (isNaN(genre)) {
-      return true;
+      throw Error('All genres should be integers');
     }
   }
   return true;
