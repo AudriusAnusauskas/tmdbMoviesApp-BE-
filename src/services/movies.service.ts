@@ -3,9 +3,7 @@ import { convertMovie, convertMovieDetails } from '../converters/movie.converter
 
 const performGetMoviesRequest = async (page: number, genres: number[]): Promise<Movies> => {
   const { data } = await axios.get<TmdbMovies>(
-    `https://api.themoviedb.org/3/discover/movie?with_genres=${genres.join(
-      ',',
-    )}&page=${page}&vote_count.gte=1000&api_key=${process.env.API_KEY}`,
+    `https://api.themoviedb.org/3/discover/movie?with_genres=${genres}&page=${page}&vote_count.gte=1000&api_key=${process.env.API_KEY}`,
   );
 
   const movies = data.results.map(convertMovie);
