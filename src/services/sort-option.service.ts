@@ -1,9 +1,6 @@
-interface SortOption {
-  code: string;
-  name: string;
-}
+import { options } from '../controllers/options';
 
-const getSortOptions = (options: SortOption[]) => {
+const getSortOptions = () => {
   return options;
 };
 
