@@ -21,15 +21,9 @@ let totalPagesCache: number | undefined;
 
 const getMovies = async (page: number, genres: number[]): Promise<Movies> => {
   const cacheKey = Number(page);
+
   if (genres) {
-    const data = await performGetMoviesRequest(page, genres);
-    const filteredMoviesByGenre = data.movies;
-    const totalPages = data.totalPages;
-    return {
-      page,
-      movies: filteredMoviesByGenre ?? [],
-      totalPages: totalPages ?? 1,
-    };
+    return performGetMoviesRequest(page, genres);
   }
 
   if (!moviesCache[cacheKey]) {
