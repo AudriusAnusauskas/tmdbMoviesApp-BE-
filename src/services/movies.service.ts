@@ -1,19 +1,35 @@
 import axios from 'axios';
 import { convertMovie, convertMovieDetails } from '../converters/movie.converter';
 
+const performGetMoviesRequest = async (page: number, genres: number[]): Promise<Movies> => {
+  const { data } = await axios.get<TmdbMovies>(
+    `https://api.themoviedb.org/3/discover/movie?with_genres=${genres}&page=${page}&vote_count.gte=1000&api_key=${process.env.API_KEY}`,
+  );
+
+  const movies = data.results.map(convertMovie);
+  const totalPages = data.total_pages;
+
+  return {
+    page,
+    movies: movies,
+    totalPages: totalPages,
+  };
+};
+
 const moviesCache: { [page: number]: Movie[] } = {};
 let totalPagesCache: number | undefined;
 
-const getTmdbMovies = async (page: number): Promise<Movies> => {
+const getMovies = async (page: number, genres: number[]): Promise<Movies> => {
   const cacheKey = Number(page);
 
-  if (!moviesCache[cacheKey]) {
-    const { data } = await axios.get<TmdbMovies>(
-      `https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&page=${page}&vote_count.gte=1000&api_key=${process.env.API_KEY}`,
-    );
+  if (genres) {
+    return performGetMoviesRequest(page, genres);
+  }
 
-    moviesCache[cacheKey] = data.results.map(convertMovie);
-    totalPagesCache = data.total_pages;
+  if (!moviesCache[cacheKey]) {
+    const data = await performGetMoviesRequest(page, []);
+    moviesCache[cacheKey] = data.movies;
+    totalPagesCache = data.totalPages;
   }
 
   return {
@@ -53,12 +69,12 @@ const searchMoviesByTitle = async (
     const totalPages = data.total_pages;
     return {
       page,
-      movies: filteredMovies || [],
-      totalPages: totalPages || 1,
+      movies: filteredMovies ?? [],
+      totalPages: totalPages ?? 1,
     };
   } catch (error) {
     throw new Error('Movie search failed');
   }
 };
 
-export { getTmdbMovies, getTmdbMovieDetails, searchMoviesByTitle };
+export { getMovies, getTmdbMovieDetails, searchMoviesByTitle };
