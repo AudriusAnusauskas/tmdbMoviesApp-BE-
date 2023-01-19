@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { convertMovie, convertMovieDetails } from '../converters/movie.converter';
 
-const performGetMoviesRequest = async (page: number, genres: number[]): Promise<Movies> => {
+const performGetMoviesRequest = async (page: number, genres: number[], sort: string): Promise<Movies> => {
   const { data } = await axios.get<TmdbMovies>(
-    `https://api.themoviedb.org/3/discover/movie?with_genres=${genres}&page=${page}&vote_count.gte=1000&api_key=${process.env.API_KEY}`,
+    `https://api.themoviedb.org/3/discover/movie?sort_by=${sort}&with_genres=${genres}&page=${page}&vote_count.gte=1000&api_key=${process.env.API_KEY}`,
   );
 
   const movies = data.results.map(convertMovie);
@@ -19,15 +19,15 @@ const performGetMoviesRequest = async (page: number, genres: number[]): Promise<
 const moviesCache: { [page: number]: Movie[] } = {};
 let totalPagesCache: number | undefined;
 
-const getMovies = async (page: number, genres: number[]): Promise<Movies> => {
+const getMovies = async (page: number, genres: number[], sort: string): Promise<Movies> => {
   const cacheKey = Number(page);
 
-  if (genres) {
-    return performGetMoviesRequest(page, genres);
+  if (genres || sort) {
+    return performGetMoviesRequest(page, genres, sort);
   }
 
   if (!moviesCache[cacheKey]) {
-    const data = await performGetMoviesRequest(page, []);
+    const data = await performGetMoviesRequest(page, [], '');
     moviesCache[cacheKey] = data.movies;
     totalPagesCache = data.totalPages;
   }
