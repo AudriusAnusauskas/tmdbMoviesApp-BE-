@@ -9,7 +9,7 @@ import moviesRoutes from './routes/movies.routes';
 import movieRoutes from './routes/movie.routes';
 import genreRoutes from './routes/genre.routes';
 import optionListRouter from './routes/sort-option.routes';
-import signUpRouter from './routes/signUp.routes';
+import signUpRouter from './routes/sign-up.routes';
 
 dotenv.config();
 

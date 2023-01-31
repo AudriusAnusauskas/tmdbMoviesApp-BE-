@@ -1,7 +1,7 @@
 import express from 'express';
 import { validationResult } from 'express-validator';
 
-import { createUser } from '../services/signUp.service';
+import { createUser } from '../services/sign-up.service';
 
 const signUp = async (req: express.Request, res: express.Response) => {
   const newUser: User = req.body;

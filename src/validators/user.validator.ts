@@ -1,4 +1,7 @@
 import { body } from 'express-validator';
+import express from 'express';
+
+import { encryptPassword } from '../services/encrypt.service';
 
 const validateUser = [
   body('name')
@@ -6,7 +9,7 @@ const validateUser = [
     .withMessage('Name is a required field.')
     .isLength({ min: 3, max: 50 })
     .withMessage('Name must be between 3 and 50 characters.'),
-  body('email') //must implement if email is unique
+  body('email')
     .notEmpty()
     .withMessage('Email is a required field.')
     .isEmail()
@@ -20,6 +23,10 @@ const validateUser = [
     .withMessage(
       'Password must have at least one upper case letter, one number, and one special character (!#$%^&*-_+)',
     ),
+  async (req: express.Request, _res: express.Response, next: express.NextFunction) => {
+    req.body.password = encryptPassword(await req.body.password);
+    next();
+  },
 ];
 
 export { validateUser };

@@ -34,7 +34,6 @@ export const connectToMongoDb = (): void => {
 
   if (process.env.MONGO_URL) {
     mongoose.connect(process.env.MONGO_URL, connectionOptions);
-    console.log('checking if connected');
   } else {
     console.error('Mongo URL not found');
   }

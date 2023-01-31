@@ -1,5 +1,5 @@
 import express from 'express';
-import { signUp } from '../controllers/signUp.controller';
+import { signUp } from '../controllers/sign-up.controller';
 import { validateUser } from '../validators/user.validator';
 
 const signUpRouter = express.Router();
