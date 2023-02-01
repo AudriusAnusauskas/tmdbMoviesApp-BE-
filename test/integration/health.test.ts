@@ -5,7 +5,8 @@ import app from '../../src/app';
 
 const expectedResponse = {
   health: true,
-  version: 'v0.1',
+  mongo: false,
+  version: 'v0.2',
 };
 
 describe('Health API', () => {
