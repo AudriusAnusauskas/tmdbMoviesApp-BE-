@@ -13,7 +13,8 @@ const signUp = async (req: express.Request, res: express.Response) => {
 
   try {
     const createdUser = await createUser(newUser);
-    res.status(201).json(createdUser);
+    const response = { name: createdUser.name, email: createdUser.email };
+    res.status(201).json(response);
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
   }

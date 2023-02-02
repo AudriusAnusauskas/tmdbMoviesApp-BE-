@@ -35,6 +35,6 @@ describe('testing-sign-up endpoint', () => {
 
     expect(res.body).toHaveProperty('name', newUser.name);
     expect(res.body).toHaveProperty('email', newUser.email);
-    expect(res.body).toHaveProperty('password');
+    expect(res.body).not.toHaveProperty('password');
   });
 });
