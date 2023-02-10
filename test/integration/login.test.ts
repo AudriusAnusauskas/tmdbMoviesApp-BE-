@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 
 import app from '../../src/app';
 
-describe('testing-sign-up endpoint', () => {
+describe('testing login endpoint', () => {
   beforeAll(async () => {
     const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017';
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -24,17 +24,14 @@ describe('testing-sign-up endpoint', () => {
     await mongoose.connection.close();
   });
 
-  it('should return 201 and created user object', async () => {
-    const newUser = {
-      name: 'Audrius A',
+  it('should return 200 and return token: value', async () => {
+    const testLogin = {
       email: 'audrius1@email.com',
       password: 'Abdsdfc!12h4',
     };
 
-    const res = await supertest(app).post('/sign-up').send(newUser).expect(201);
+    const res = await supertest(app).post('/login').send(testLogin).expect(200);
 
-    expect(res.body).toHaveProperty('name', newUser.name);
-    expect(res.body).toHaveProperty('email', newUser.email);
-    expect(res.body).not.toHaveProperty('password');
+    expect(res.body).toHaveProperty('token');
   });
 });
