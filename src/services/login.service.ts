@@ -1,10 +1,7 @@
 import { UserModel } from '../models/user';
 import { encryptPassword } from './encrypt.service';
 
-const comparePassword = (password: string, hash: string) => {
-  const encryptedPassword = encryptPassword(password);
-  return encryptedPassword === hash;
-};
+const comparePassword = (password: string, hash: string) => encryptPassword(password) === hash;
 
 const login = async (email: string, password: string): Promise<UserLogin | null> => {
   const user = await UserModel.findOne({ email });
@@ -12,12 +9,8 @@ const login = async (email: string, password: string): Promise<UserLogin | null>
   if (!user) {
     return null;
   }
-  const isPasswordCorrect = comparePassword(password, user.password);
-  if (!isPasswordCorrect) {
-    return null;
-  }
 
-  return user;
+  return comparePassword(password, user.password) ? user : null;
 };
 
 export { login };
