@@ -84,8 +84,7 @@ describe('testing login endpoint', () => {
 
     expect(res.status).toBe(400);
     expect(res.body).toHaveProperty('errors');
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    expect(res.body.errors.map((e: any) => e.msg)).toContain('Email is a required field.');
+    expect(res.body.errors.map((e: { msg: string }) => e.msg)).toContain('Email is a required field.');
   });
 
   it('should return 400 and an error message when password is missing', async () => {
@@ -93,7 +92,6 @@ describe('testing login endpoint', () => {
 
     expect(res.status).toBe(400);
     expect(res.body).toHaveProperty('errors');
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    expect(res.body.errors.map((e: any) => e.msg)).toContain('Password is a required field.');
+    expect(res.body.errors.map((e: { msg: string }) => e.msg)).toContain('Password is a required field.');
   });
 });
