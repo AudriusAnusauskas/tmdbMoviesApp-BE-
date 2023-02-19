@@ -22,7 +22,6 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
 
   try {
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string);
-    console.log(decoded);
     req.currentUserEmail = (decoded as { currentUserEmail: string }).currentUserEmail;
     next();
   } catch (err) {
