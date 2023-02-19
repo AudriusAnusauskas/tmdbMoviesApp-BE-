@@ -25,9 +25,9 @@ const logInControl = async (req: express.Request, res: express.Response) => {
       return secret;
     };
 
-    jwt.sign({ data: email }, getSecret(), { expiresIn: String(process.env.JWT_EXPIRE) });
+    const token = jwt.sign({ data: email }, getSecret(), { expiresIn: String(process.env.JWT_EXPIRE) });
 
-    return res.status(200).json({ token: 'value' });
+    return res.status(200).json({ token });
   } catch (error) {
     res.status(500).json({ error: error as Error });
   }
