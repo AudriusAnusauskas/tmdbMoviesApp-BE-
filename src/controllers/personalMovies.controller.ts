@@ -4,6 +4,7 @@ import createPersonalMovie from '../services/personalMovies.service';
 
 const addPersonalMovie = async (req: express.Request, res: express.Response) => {
   const movie: Movie = req.body;
+  movie.email = req.currentUserEmail;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
