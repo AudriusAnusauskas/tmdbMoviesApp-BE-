@@ -2,9 +2,13 @@ import express from 'express';
 import { validationResult } from 'express-validator';
 import createPersonalMovie from '../services/personalMovies.service';
 
+interface PersonalMovie extends Movie {
+  email: string;
+}
+
 const addPersonalMovie = async (req: express.Request, res: express.Response) => {
-  const movie: Movie = req.body;
-  movie.email = req.currentUserEmail;
+  const movie: PersonalMovie = { ...req.body, email: req.currentUserEmail as string };
+
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
