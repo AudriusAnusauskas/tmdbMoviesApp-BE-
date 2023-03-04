@@ -11,6 +11,7 @@ import genreRoutes from './routes/genre.routes';
 import optionListRouter from './routes/sort-option.routes';
 import signUpRouter from './routes/sign-up.routes';
 import loginRouter from './routes/login.routes';
+import PersonalMoviesListRouter from './routes/personalMovies.routes';
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ app.use('/genres', genreRoutes);
 app.use('/sort-options', optionListRouter);
 app.use('/sign-up', signUpRouter);
 app.use('/login', loginRouter);
+app.use('/personal-movies', PersonalMoviesListRouter);
 
 const errorLogger: ErrorRequestHandler = (err, _req, _res, next) => {
   console.error(err.stack);
