@@ -1,5 +1,7 @@
 # My Movies REST API
 
+This repo is mirrored from the devMentor private repository to share the code that I wrote and worked on.
+
 This project contains source code and supporting files for My Movies application back-end. It includes the following files and folders.
 
 - .github - Deployment workflow.
